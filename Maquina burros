@@ -1,0 +1,101 @@
+import streamlit as st
+
+class Burritos:
+    def __init__(self):
+        self.totaldia = 0
+        self.numpedido = 0
+        self.ordenes = []
+        self.lista = []
+        self.lista_asa = []
+        self.lista_coch = []
+        self.lista_des = []
+        self.asa = 0  # Add this line to define 'asa'
+        self.coch = 0
+        self.des = 0
+
+    def ag_coch(self):
+        self.coch += 1
+
+    def ag_asa(self):
+        self.asa += 1
+
+    def ag_des(self):
+        self.des += 1
+
+    def qu_coch(self):
+        self.coch -= 1
+
+    def qu_asa(self):
+        self.asa -= 1
+
+    def qu_des(self):
+        self.des -= 1
+
+    def tomar_orden(self):
+        pedido = orden(asa=self.asa, des=self.des, coch=self.coch)
+        temp = f"Asada: {self.asa} Cochinita: {self.coch} Deshebrada: {self.des} Total: {pedido} Número de orden {self.numpedido}"
+        self.ordenes.append(temp)
+        self.numpedido += 1
+        self.lista.append([self.asa, self.coch, self.des, pedido])
+        self.lista_asa.append(self.asa)
+        self.lista_coch.append(self.coch)
+        self.lista_des.append(self.des)
+
+    def mod_orden(self):
+        # Implement modification logic here
+        pass
+
+    def clear(self):
+        self.coch = 0
+        self.asa = 0
+        self.des = 0
+
+    def fin_orden(self):
+        # Implement final order logic here
+        pass
+
+    def borrar(self):
+        # Implement deletion logic here
+        pass
+
+    def cierre(self):
+        # Implement closure logic here
+        pass
+
+
+# Define orden function
+def orden(asa=0, des=0, coch=0):
+    return ((int(asa) + int(des) + int(coch)) * 35) + (int(asa) * 27)
+
+# Streamlit app
+def main():
+    st.title("Burritos_Norteños")
+    dia = Burritos()
+
+    # Streamlit components
+    asa = st.number_input("Burros de asada", min_value=0, step=1, key="asa")
+    coch = st.number_input("Burros de cochinita", min_value=0, step=1, key="coch")
+    des = st.number_input("Burros de deshebrada", min_value=0, step=1, key="des")
+
+    if st.button("Agregar orden"):
+        dia.ag_asa()
+        dia.ag_coch()
+        dia.ag_des()
+        dia.tomar_orden()
+
+    if st.button("Cerrar el día"):
+        dia.cierre()
+
+    # Display current orders
+    st.subheader("Órdenes activas")
+    for order in dia.ordenes:
+        st.write(order)
+
+    # Display final orders (if closed)
+    if dia.totaldia:
+        st.subheader("Órdenes finales")
+        for order in dia.ordenes:
+            st.write(order)
+
+if __name__ == "__main__":
+    main()
